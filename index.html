@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fynance - Gestão Financeira Inteligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sidebar / Navegação -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Fy<span>nance</span></h2>
+        </div>
+
+        <nav class="menu">
+            <a href="#" class="active" onclick="switchView('dashboard', event)">📊 Dashboard</a>
+            <a href="#" onclick="switchView('despesas', event)">💸 Despesas</a>
+            <a href="#" onclick="switchView('cartoes', event)">💳 Cartão de Crédito</a>
+            <a href="#" onclick="switchView('orcamentos', event)">🎯 Orçamentos</a>
+            <a href="#" onclick="toggleNotifications(); return false;">🔔 Notificações <span class="badge" id="notifBadge">2</span></a>
+            <a href="#" onclick="openAuthModal('login')">👤 Login / Cadastro</a>
+        </nav>
+
+        <div class="demo-badge-container">
+            <span class="demo-tag">Modo Demonstração</span>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div>
+                <h1 id="pageTitle">Visão Geral Financeira</h1>
+                <p class="subtitle">Demonstração interativa funcional</p>
+            </div>
+            <div class="user-info">
+                <span id="userName">Usuário Demo</span>
+                <button class="btn-secondary" onclick="openAuthModal('login')">Entrar / Criar Conta</button>
+            </div>
+        </header>
+
+        <!-- Painel de Notificações -->
+        <div class="card notification-panel" id="notificationPanel">
+            <h3>🔔 Central de Notificações</h3>
+            <ul>
+                <li>⚠️ <strong>Alerta de Cartão:</strong> Sua fatura vence em 5 dias.</li>
+                <li>🎯 <strong>Orçamento:</strong> Você atingiu 80% do limite em Alimentação.</li>
+            </ul>
+        </div>
+
+        <!-- ABA 1: DASHBOARD -->
+        <section id="view-dashboard" class="view-section active">
+            <section class="metrics-grid">
+                <div class="card metric">
+                    <h3>Saldo Estimado</h3>
+                    <p class="amount positive">R$ 5.000,00</p>
+                </div>
+                <div class="card metric">
+                    <h3>Total de Despesas</h3>
+                    <p class="amount negative" id="dashTotalExpenses">R$ 0,00</p>
+                </div>
+                <div class="card metric">
+                    <h3>Fatura Cartão</h3>
+                    <p class="amount warning" id="dashCreditCardTotal">R$ 0,00</p>
+                </div>
+                <div class="card metric health-card">
+                    <h3>Saúde Financeira</h3>
+                    <div class="health-indicator">
+                        <span class="status-badge" id="dashHealthStatus">Calculando...</span>
+                    </div>
+                    <small id="dashHealthTip">Status calculado em tempo real.</small>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Resumo Recente</h2>
+                <p style="margin-top: 8px; color: #64748B;">Navegue pelas abas no menu lateral para gerenciar despesas, cartões e limites de orçamento.</p>
+            </section>
+        </section>
+
+        <!-- ABA 2: DESPESAS -->
+        <section id="view-despesas" class="view-section">
+            <section class="card form-section">
+                <h2>Adicionar Nova Despesa</h2>
+                <form id="expenseForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <input type="text" id="desc" placeholder="Ex: Supermercado, Internet" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="number" step="0.01" id="amount" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="category">
+                                <option value="Alimentação">Alimentação</option>
+                                <option value="Moradia">Moradia</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Educação">Educação</option>
+                                <option value="Lazer">Lazer</option>
+                                <option value="Ferramentas/Trabalho">Ferramentas / Trabalho</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Forma de Pagamento</label>
+                            <select id="paymentMethod">
+                                <option value="Pix">Pix / Dinheiro</option>
+                                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                <option value="Cartão de Débito">Cartão de Débito</option>
+                                <option value="Boleto">Boleto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status da Dívida</label>
+                            <select id="status">
+                                <option value="Pago">Pago</option>
+                                <option value="Pendente">Pendente</option>
+                            </select>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label><input type="checkbox" id="recurring"> Despesa Recorrente (Mensal)</label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Cadastrar Despesa</button>
+                        <button type="button" class="btn-secondary" onclick="resetDemoData()">Restaurar Dados Demo</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card table-section">
+                <div class="table-header">
+                    <h2>Histórico de Despesas</h2>
+                    <div class="filter-group">
+                        <label>Filtrar Categoria:</label>
+                        <select id="filterCategory" onchange="updateUI()">
+                            <option value="Todas">Todas</option>
+                            <option value="Alimentação">Alimentação</option>
+                            <option value="Moradia">Moradia</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Educação">Educação</option>
+                            <option value="Lazer">Lazer</option>
+                            <option value="Ferramentas/Trabalho">Ferramentas / Trabalho</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Pagamento</th>
+                            <th>Status</th>
+                            <th>Recorrente</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseList">
+                        <!-- Inserido dinamicamente via JS -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- ABA 3: CARTÃO DE CRÉDITO -->
+        <section id="view-cartoes" class="view-section">
+            <div class="metrics-grid">
+                <div class="card metric">
+                    <h3>Fatura Atual</h3>
+                    <p class="amount warning" id="cardFaturaTotal">R$ 0,00</p>
+                </div>
+                <div class="card metric">
+                    <h3>Limite Disponível</h3>
+                    <p class="amount positive" id="cardLimitAvailable">R$ 3.749,50</p>
+                </div>
+                <div class="card metric">
+                    <h3>Limite Total</h3>
+                    <p class="amount">R$ 5.000,00</p>
+                </div>
+            </div>
+
+            <section class="card table-section">
+                <h2>Lançamentos no Cartão de Crédito</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="creditCardList">
+                        <!-- Inserido dinamicamente via JS -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- ABA 4: ORÇAMENTOS -->
+        <section id="view-orcamentos" class="view-section">
+            <section class="card">
+                <h2>Metas e Limites de Gastos</h2>
+                <p style="margin-bottom: 20px; color: #64748B;">Acompanhe a evolução das suas metas de gastos em relação às despesas cadastradas.</p>
+                
+                <div class="budget-item">
+                    <div class="budget-info">
+                        <span>🍔 Alimentação (Limite: R$ 1.000,00)</span>
+                        <strong id="budgetAlimentacaoText">R$ 0,00</strong>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="budgetAlimentacaoBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="budget-item">
+                    <div class="budget-info">
+                        <span>🎓 Educação (Limite: R$ 600,00)</span>
+                        <strong id="budgetEducacaoText">R$ 0,00</strong>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="budgetEducacaoBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="budget-item">
+                    <div class="budget-info">
+                        <span>🎬 Lazer (Limite: R$ 300,00)</span>
+                        <strong id="budgetLazerText">R$ 0,00</strong>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="budgetLazerBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+    </main>
+
+    <!-- Modal de Autenticação -->
+    <div class="modal" id="authModal">
+        <div class="modal-content card">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <div class="tabs">
+                <button class="tab-btn active" id="btnTabLogin" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" id="btnTabRegister" onclick="switchTab('register')">Cadastro</button>
+                <button class="tab-btn" id="btnTabRecover" onclick="switchTab('recover')">Recuperar Senha</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active" onsubmit="handleAuth(event, 'Login efetuado (Modo Demo)!')">
+                <h3>Acessar Fynance</h3>
+                <input type="email" value="demo@fynance.com" required>
+                <input type="password" value="123456" required>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+
+            <form id="registerForm" class="auth-form" onsubmit="handleAuth(event, 'Conta criada (Modo Demo)!')">
+                <h3>Criar Nova Conta</h3>
+                <input type="text" placeholder="Nome Completo" required>
+                <input type="email" placeholder="E-mail" required>
+                <input type="password" placeholder="Senha" required>
+                <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+
+            <form id="recoverForm" class="auth-form" onsubmit="handleAuth(event, 'E-mail de recuperação enviado!')">
+                <h3>Recuperar Senha</h3>
+                <input type="email" placeholder="Digite seu e-mail cadastrado" required>
+                <button type="submit" class="btn-primary">Enviar Link de Recuperação</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+:root {
+    --bg-main: #F8FAFC;
+    --primary: #0F172A;
+    --primary-light: #1E293B;
+    --accent: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --card-bg: #FFFFFF;
+    --text-color: #334155;
+    --border-color: #E2E8F0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--primary);
+    color: #FFF;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.logo h2 {
+    font-size: 26px;
+    letter-spacing: -0.5px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu a {
+    color: #94A3B8;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu a:hover, .menu a.active {
+    background-color: var(--primary-light);
+    color: #FFF;
+}
+
+.badge {
+    background: var(--danger);
+    color: #FFF;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.demo-badge-container {
+    margin-top: auto;
+}
+
+.demo-tag {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    border: 1px dashed var(--accent);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #64748B;
+}
+
+/* Controle de Navegação das Abas */
+.view-section {
+    display: none;
+}
+
+.view-section.active {
+    display: block;
+}
+
+/* Painel Notificação */
+.notification-panel {
+    display: none;
+    background-color: #EFF6FF;
+    border-color: #BFDBFE;
+    margin-bottom: 24px;
+}
+
+.notification-panel ul {
+    margin-top: 8px;
+    padding-left: 20px;
+}
+
+.notification-panel li {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+/* Cards & Layout */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric h3 {
+    font-size: 14px;
+    color: #64748B;
+    margin-bottom: 8px;
+}
+
+.amount {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.amount.positive { color: var(--accent); }
+.amount.negative { color: var(--danger); }
+.amount.warning { color: var(--warning); }
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-good { background-color: #D1FAE5; color: #065F46; }
+.status-warning { background-color: #FEF3C7; color: #92400E; }
+.status-danger { background-color: #FEE2E2; color: #991B1B; }
+
+/* Forms */
+.form-section h2 {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent);
+}
+
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: #FFF;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Data Table */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+}
+
+.data-table th {
+    background-color: #F1F5F9;
+    color: #475569;
+}
+
+/* Orçamentos */
+.budget-item {
+    margin-bottom: 16px;
+}
+
+.budget-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #E2E8F0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 400px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+}
+
+.auth-form {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.auth-form.active {
+    display: flex;
+}
